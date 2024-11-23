@@ -10,6 +10,10 @@ ifndef UNAME_M
 UNAME_M := $(shell uname -m)
 endif
 
+ifeq ($(findstring _NT,$(UNAME_S)),)
+	LIB_PRE := lib
+endif
+
 GGML_METAL_PATH_RESOURCES := $(abspath ../..)
 BUILD_DIR := build
 MODELS_DIR := models
@@ -30,7 +34,7 @@ all: clean whisper examples
 
 whisper: mkdir
 	@echo Build whisper
-	@${MAKE} -C ../.. libwhisper.a
+	@${MAKE} -C ../.. $(LIB_PRE)whisper.a
 
 test: model-small whisper modtidy
 ifeq ($(UNAME_S),Darwin)
